@@ -13,10 +13,17 @@ const ENTRY =
 
 const OUTPUT_PATH = "/output/entry.txt";
 
+function charCount(text: string): number {
+  // Count Unicode code points, not UTF-16 code units, so the gate
+  // matches how the competition counts characters.
+  return [...text].length;
+}
+
 function checkGate(text: string): string[] {
   const problems: string[] = [];
-  if (text.length < 1 || text.length > 120) {
-    problems.push(`length ${text.length} is outside 1-120 characters`);
+  const chars = charCount(text);
+  if (chars < 1 || chars > 120) {
+    problems.push(`length ${chars} is outside 1-120 characters`);
   }
   if (text.trim().length === 0) {
     problems.push("entry is only whitespace");
@@ -49,7 +56,7 @@ function main(): void {
   }
 
   console.log(`entry: ${written}`);
-  console.log(`chars: ${written.length}`);
+  console.log(`chars: ${charCount(written)}`);
   console.log(`sha256: ${sha256Hex(written)}`);
   console.log(`wrote ${OUTPUT_PATH}`);
 }
